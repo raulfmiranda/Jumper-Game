@@ -4,17 +4,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
-import com.raulfmiranda.jumper.Passaro;
+import com.raulfmiranda.jumper.elementos.Cano;
+import com.raulfmiranda.jumper.elementos.Canos;
+import com.raulfmiranda.jumper.elementos.Passaro;
 import com.raulfmiranda.jumper.R;
 import com.raulfmiranda.jumper.Tela;
 
-public class Game extends SurfaceView implements Runnable {
+public class Game extends SurfaceView implements Runnable, View.OnTouchListener {
     private boolean isRunning = true;
     private final SurfaceHolder holder = getHolder();
     private Passaro passaro;
+    private Canos canos;
     private Bitmap background;
     private Tela tela;
 
@@ -22,6 +27,7 @@ public class Game extends SurfaceView implements Runnable {
         super(context);
         tela = new Tela(context);
         inicializaElementos();
+        setOnTouchListener(this);
     }
 
     @Override
@@ -34,6 +40,8 @@ public class Game extends SurfaceView implements Runnable {
             canvas.drawBitmap(background, 0, 0, null);
             passaro.desenhaNo(canvas);
             passaro.cai();
+            canos.desenhaNo(canvas);
+            canos.move();
 
             holder.unlockCanvasAndPost(canvas);
         }
@@ -41,6 +49,9 @@ public class Game extends SurfaceView implements Runnable {
 
     private void inicializaElementos() {
         this.passaro = new Passaro();
+        this.canos = new Canos(tela);
+        Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        this.background = Bitmap.createScaledBitmap(back, back.getWidth(), tela.getAltura(), false);
     }
 
     public void cancela() {
@@ -48,8 +59,12 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void inicia() {
-        Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-        this.background = Bitmap.createScaledBitmap(back, back.getWidth(), tela.getAltura(), false);
         this.isRunning = true;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        passaro.pula();
+        return false;
     }
 }

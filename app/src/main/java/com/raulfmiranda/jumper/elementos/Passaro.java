@@ -1,7 +1,9 @@
-package com.raulfmiranda.jumper;
+package com.raulfmiranda.jumper.elementos;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
+import com.raulfmiranda.jumper.Cores;
 
 public class Passaro {
     private static final Paint vermelho = Cores.getCorDoPassaro();
@@ -20,4 +22,6 @@ public class Passaro {
     public void cai() {
         this.altura +=5;
     }
+
+    public void pula() { this.altura -= 150; }
 }
