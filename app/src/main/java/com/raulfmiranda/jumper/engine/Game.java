@@ -9,7 +9,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.raulfmiranda.jumper.elementos.Cano;
 import com.raulfmiranda.jumper.elementos.Canos;
 import com.raulfmiranda.jumper.elementos.Passaro;
 import com.raulfmiranda.jumper.R;
@@ -48,7 +47,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
     }
 
     private void inicializaElementos() {
-        this.passaro = new Passaro();
+        this.passaro = new Passaro(tela);
         this.canos = new Canos(tela);
         Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         this.background = Bitmap.createScaledBitmap(back, back.getWidth(), tela.getAltura(), false);
