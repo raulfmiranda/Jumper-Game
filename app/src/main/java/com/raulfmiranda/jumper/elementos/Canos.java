@@ -13,8 +13,10 @@ public class Canos {
     private static final int DISTANCIA_ENTRE_CANOS = 250;
     private List<Cano> canos = new ArrayList<>();
     private Tela tela;
+    private final Pontuacao pontuacao;
 
-    public Canos(Tela tela) {
+    public Canos(Tela tela, Pontuacao pontuacao) {
+        this.pontuacao = pontuacao;
         int posicaoInicial = 200;
         this.tela = tela;
 
@@ -32,6 +34,7 @@ public class Canos {
             cano.move();
 
             if (cano.saiuDaTela()) {
+                pontuacao.aumenta();
                 iterator.remove();
                 Cano outroCano = new Cano(tela, getMaximo() + DISTANCIA_ENTRE_CANOS);
                 iterator.add(outroCano);
@@ -50,5 +53,14 @@ public class Canos {
     public void move() {
         for (Cano cano : canos)
             cano.move();
+    }
+
+    public boolean temColisaoCom(Passaro passaro) {
+        for (Cano cano: canos) {
+            if(cano.temColisaoHorizontalCom(passaro) && cano.temColisaoVerticalCom(passaro)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
