@@ -1,8 +1,10 @@
 package com.raulfmiranda.jumper.elementos;
 
+import android.content.Context;
 import android.graphics.Canvas;
 
 import com.raulfmiranda.jumper.Tela;
+import com.raulfmiranda.jumper.engine.Som;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +13,22 @@ import java.util.ListIterator;
 public class Canos {
     private static final int QUANTIDADE_DE_CANOS = 5;
     private static final int DISTANCIA_ENTRE_CANOS = 250;
+    private final Context context;
     private List<Cano> canos = new ArrayList<>();
     private Tela tela;
     private final Pontuacao pontuacao;
+    private Som som;
 
-    public Canos(Tela tela, Pontuacao pontuacao) {
+    public Canos(Tela tela, Pontuacao pontuacao, Context context, Som som) {
         this.pontuacao = pontuacao;
+        this.som = som;
         int posicaoInicial = 200;
         this.tela = tela;
+        this.context = context;
 
         for (int i = 0; i < QUANTIDADE_DE_CANOS; i++) {
             posicaoInicial += DISTANCIA_ENTRE_CANOS;
-            canos.add(new Cano(tela, posicaoInicial));
+            canos.add(new Cano(tela, posicaoInicial, context));
         }
     }
 
@@ -34,9 +40,10 @@ public class Canos {
             cano.move();
 
             if (cano.saiuDaTela()) {
+                som.play(Som.PONTOS);
                 pontuacao.aumenta();
                 iterator.remove();
-                Cano outroCano = new Cano(tela, getMaximo() + DISTANCIA_ENTRE_CANOS);
+                Cano outroCano = new Cano(tela, getMaximo() + DISTANCIA_ENTRE_CANOS, context);
                 iterator.add(outroCano);
             }
         }
