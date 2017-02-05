@@ -37,7 +37,7 @@ public class Passaro {
         boolean chegouNoChao = altura + RAIO > tela.getAltura();
 
         if(!chegouNoChao) {
-            this.altura +=20;
+            this.altura +=5;
         }
     }
 

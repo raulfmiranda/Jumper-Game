@@ -9,6 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.raulfmiranda.jumper.MainActivity;
 import com.raulfmiranda.jumper.elementos.Canos;
 import com.raulfmiranda.jumper.elementos.GameOver;
 import com.raulfmiranda.jumper.elementos.Passaro;
@@ -32,6 +33,8 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
         this.context = context;
         this.som = new Som(context);
         tela = new Tela(context);
+        Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        this.background = Bitmap.createScaledBitmap(back, back.getWidth(), tela.getAltura(), false);
         inicializaElementos();
         setOnTouchListener(this);
     }
@@ -55,7 +58,7 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
             if(new VerificadorDeColisao(canos, passaro).temColisao()) {
                 som.play(Som.COLISAO);
                 new GameOver(tela).desenhaNo(canvas);
-                isRunning = false;
+                cancela();
             }
 
             holder.unlockCanvasAndPost(canvas);
@@ -66,8 +69,6 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
         this.pontuacao = new Pontuacao();
         this.passaro = new Passaro(tela, context, som);
         this.canos = new Canos(tela, pontuacao, context, som);
-        Bitmap back = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-        this.background = Bitmap.createScaledBitmap(back, back.getWidth(), tela.getAltura(), false);
     }
 
     public void cancela() {
@@ -80,7 +81,14 @@ public class Game extends SurfaceView implements Runnable, View.OnTouchListener 
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        passaro.pula();
+        if(isRunning) {
+            passaro.pula();
+        } else {
+            inicializaElementos();
+            Game game = ((MainActivity)this.context).getGame();
+            game.inicia();
+            new Thread(game).start();
+        }
         return false;
     }
 }

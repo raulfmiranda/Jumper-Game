@@ -11,7 +11,7 @@ import com.raulfmiranda.jumper.R;
 import com.raulfmiranda.jumper.Tela;
 
 public class Cano {
-    private static final int TAMANHO_DO_CANO = 250;
+    private static final int TAMANHO_DO_CANO = 125;
     private static final int LARGURA_DO_CANO = 100;
     private final Paint VERDE = Cores.getCorDoCano();
     private final Context context;
@@ -40,7 +40,6 @@ public class Cano {
     private void desenhaCanoSuperior(Canvas canvas) {
         this.canoSuperior = Bitmap.createScaledBitmap(bp, LARGURA_DO_CANO, this.alturaDoCanoSuperior, false);
         canvas.drawBitmap(canoSuperior, posicao, 0, null);
-        //canvas.drawRect(posicao, 0, posicao + LARGURA_DO_CANO, alturaDoCanoSuperior, VERDE);
     }
 
     private void desenhaCanoInferior(Canvas canvas) {
@@ -49,7 +48,7 @@ public class Cano {
     }
 
     public void move() {
-        posicao -= 5;
+        posicao -= 3;
     }
 
     private int valorAleatorio() {

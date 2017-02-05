@@ -33,4 +33,8 @@ public class MainActivity extends Activity {
         game.inicia();
         new Thread(game).start();
     }
+
+    public Game getGame() {
+        return game;
+    }
 }
